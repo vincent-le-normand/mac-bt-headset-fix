@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A388a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
@@ -73,6 +73,19 @@
                 <menuItem title="Spotify Bluetooth Headset Listener" id="gFf-v8-zei">
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="Ueg-MO-dCg"/>
+                <menuItem title="Control iTunes" id="slg-Mm-oRF">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="controlItunes:" target="494" id="ukh-D0-wlW"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Control Spotify" id="cpe-rb-IHi">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="controlSpotify:" target="494" id="Wjx-uv-f1Z"/>
+                    </connections>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="bdr-c7-coz"/>
                 <menuItem title="Hide" id="r2Y-cK-FJW">
                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -87,6 +100,7 @@
                     </connections>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="-198.5" y="162.5"/>
         </menu>
     </objects>
 </document>

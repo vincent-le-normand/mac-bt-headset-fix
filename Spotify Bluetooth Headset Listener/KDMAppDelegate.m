@@ -16,6 +16,7 @@
 @implementation KDMAppDelegate {
 	NSStatusItem * statusItem;
 	IBOutlet NSMenu * statusItemMenu;
+	BOOL disableSpotifyControl;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -26,6 +27,9 @@
 
 	[NSTask launchedTaskWithLaunchPath:@"/bin/launchctl" arguments:@[@"unload",@"/System/Library/LaunchAgents/com.apple.rcd.plist"]];
 	self.eventMonitor = [NSEvent addGlobalMonitorForEventsMatchingMask:(NSKeyDownMask|NSSystemDefinedMask)  handler:^(NSEvent * event) {
+		if(disableSpotifyControl)
+			return;
+		
 		int keyCode = (([event data1] & 0xFFFF0000) >> 16);
 		
         int keyFlags = ([event data1] & 0x0000FFFF);
@@ -84,6 +88,17 @@
 	[NSEvent removeMonitor:self.eventMonitor];
 }
 
+- (IBAction)controlItunes:(id)sender {
+	[NSTask launchedTaskWithLaunchPath:@"/bin/launchctl" arguments:@[@"load",@"/System/Library/LaunchAgents/com.apple.rcd.plist"]];
+	disableSpotifyControl = YES;
+}
+
+- (IBAction)controlSpotify:(id)sender {
+	[NSTask launchedTaskWithLaunchPath:@"/bin/launchctl" arguments:@[@"unload",@"/System/Library/LaunchAgents/com.apple.rcd.plist"]];
+	disableSpotifyControl = NO;
+}
+
+
 - (IBAction)hide:(id)sender {
 	NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	if([standardUserDefaults boolForKey:@"Hide menu Item"]) {
@@ -97,6 +112,14 @@
 	}
 }
 - (BOOL) validateMenuItem:(NSMenuItem *)menuItem {
+	if([menuItem action] == @selector(controlItunes:)) {
+		[menuItem setState:disableSpotifyControl?NSOnState:NSOffState];
+		return YES;
+	}
+	if([menuItem action] == @selector(controlSpotify:)) {
+		[menuItem setState:disableSpotifyControl?NSOffState:NSOnState];
+		return YES;
+	}
 	if([menuItem action] == @selector(hide:)) {
 		[menuItem setState:[[NSUserDefaults standardUserDefaults] boolForKey:@"Hide menu Item"]?NSOnState:NSOffState];
 		return YES;
